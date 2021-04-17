@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.utils.getDimInPx
 import kotlin.math.max
 import kotlin.math.min

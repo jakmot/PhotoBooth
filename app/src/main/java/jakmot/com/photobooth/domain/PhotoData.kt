@@ -1,4 +1,4 @@
-package jakmot.com.photobooth.gallery
+package jakmot.com.photobooth.domain
 
 data class PhotoData(
     val name: String,

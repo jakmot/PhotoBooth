@@ -5,13 +5,14 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.domain.PhotoData
 
 class GalleryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gallery_activity)
-        actionBar?.setDisplayHomeAsUpEnabled(true);
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.domain.PhotoData
 
 class PhotoAdapter(private val photoDataList: List<PhotoData>) :
     RecyclerView.Adapter<PhotoViewHolder>() {
