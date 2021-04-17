@@ -18,7 +18,7 @@ class GalleryActivity : AppCompatActivity() {
         val photoList = photoDirectory?.listFiles()?.map {
             PhotoData(
                 name = it.name,
-                filePath = it.absolutePath
+                filePath = it.absolutePath,
             )
         }.orEmpty()
 
