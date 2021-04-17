@@ -9,6 +9,6 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val creationTime = itemView.findViewById<TextView>(R.id.creationTime)
 
     fun bind(photoData: PhotoData) {
-        creationTime.text = photoData.creationTime
+        creationTime.text = photoData.name
     }
 }
