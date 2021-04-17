@@ -12,21 +12,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
-import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
-import jakmot.com.photobooth.gallery.GalleryActivity
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.gallery.GalleryActivity
+import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
 import java.io.File
 import java.io.IOException
 import java.time.Instant
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEntered {
 
-    private var currentPhotoPath: String? = null
+    private var currentFileName: String? = null
 
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { wasPhotoSaved ->
             if (wasPhotoSaved) {
-                EnterPhotoNameDialog().show(supportFragmentManager, null)
+                EnterPhotoNameDialog()
+                    .apply {
+                        arguments = bundleOf(
+                            EnterPhotoNameDialog.DEFAULT_NAME_ARG to currentFileName
+                        )
+                    }
+                    .show(supportFragmentManager, null)
             } else {
                 Toast.makeText(this, "Operation canceled", Toast.LENGTH_SHORT).show()
             }
@@ -79,7 +85,11 @@ class HomeActivity : AppCompatActivity() {
             ".jpg",
             storageDir
         ).apply {
-            currentPhotoPath = absolutePath
+            currentFileName = timeStamp
         }
+    }
+
+    override fun invoke(text: String) {
+        Toast.makeText(this, "File name: $text", Toast.LENGTH_SHORT).show()
     }
 }
