@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoBooth"
         tools:ignore="AllowBackup">
-        <activity android:name=".HomeActivity">
+        <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GalleryActivity" />
+        <activity android:name=".gallery.GalleryActivity" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.jakmot.fileprovider"

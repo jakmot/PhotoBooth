@@ -1,8 +1,9 @@
-package jakmot.com.photobooth
+package jakmot.com.photobooth.gallery
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import jakmot.com.photobooth.R
 import java.time.Instant
 
 class GalleryActivity : AppCompatActivity() {

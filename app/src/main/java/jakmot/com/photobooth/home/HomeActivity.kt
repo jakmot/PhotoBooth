@@ -1,4 +1,4 @@
-package jakmot.com.photobooth
+package jakmot.com.photobooth.home
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -12,7 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
-import jakmot.com.photobooth.ErrorDialog.Companion.MESSAGE_ARG
+import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
+import jakmot.com.photobooth.gallery.GalleryActivity
+import jakmot.com.photobooth.R
 import java.io.File
 import java.io.IOException
 import java.time.Instant

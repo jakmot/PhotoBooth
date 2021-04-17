@@ -1,4 +1,4 @@
-package jakmot.com.photobooth
+package jakmot.com.photobooth.home
 
 import android.app.Dialog
 import android.content.DialogInterface
