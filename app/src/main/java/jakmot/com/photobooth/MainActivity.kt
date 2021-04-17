@@ -4,17 +4,28 @@ import android.content.ActivityNotFoundException
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
+import jakmot.com.photobooth.ErrorDialog.Companion.MESSAGE_ARG
+import java.io.File
+import java.io.IOException
+import java.time.Instant
 
 class MainActivity : AppCompatActivity() {
+
+    private var currentPhotoPath: String? = null
 
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { wasPhotoSaved ->
             if (wasPhotoSaved) {
                 Toast.makeText(this, "Photo saved", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Operation canceled", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -30,10 +41,37 @@ class MainActivity : AppCompatActivity() {
 
     private fun onTakePhotoClicked() {
         try {
-            takePicture.launch(Uri.EMPTY)
+            val imageFile = createImageFile()
+            val photoURI: Uri = FileProvider.getUriForFile(
+                this,
+                "com.jakmot.fileprovider",
+                imageFile
+            )
+            takePicture.launch(photoURI)
         } catch (error: ActivityNotFoundException) {
             Log.e(MainActivity::class.java.name, null, error)
-            NoCameraAppDialog().show(supportFragmentManager, null)
+            ErrorDialog().apply {
+                arguments = bundleOf(
+                    MESSAGE_ARG to "No camera app"
+                )
+            }.show(supportFragmentManager, null)
+        } catch (error: IOException) {
+            Log.e(MainActivity::class.java.name, null, error)
+
+            ErrorDialog().show(supportFragmentManager, null)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp = Instant.now().toString()
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            timeStamp,
+            ".jpg",
+            storageDir
+        ).apply {
+            currentPhotoPath = absolutePath
         }
     }
 }
