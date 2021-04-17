@@ -13,15 +13,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.gallery.GalleryActivity
 import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
 import java.io.File
 import java.io.IOException
 import java.time.Instant
 
-class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEntered {
+class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredListener {
 
-    private var currentFileName: String? = null
+    private var currentPhoto: PhotoData? = null
 
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { wasPhotoSaved ->
@@ -29,10 +30,10 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEntered {
                 EnterPhotoNameDialog()
                     .apply {
                         arguments = bundleOf(
-                            EnterPhotoNameDialog.DEFAULT_NAME_ARG to currentFileName
+                            EnterPhotoNameDialog.DEFAULT_NAME_ARG to currentPhoto?.name
                         )
                     }
-                    .show(supportFragmentManager, null)
+                    .show(supportFragmentManager, "enter_phone_number_dialog")
             } else {
                 Toast.makeText(this, "Operation canceled", Toast.LENGTH_SHORT).show()
             }
@@ -68,28 +69,43 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEntered {
                 arguments = bundleOf(
                     MESSAGE_ARG to "No camera app"
                 )
-            }.show(supportFragmentManager, null)
+            }.show(supportFragmentManager, "error_dialog")
         } catch (error: IOException) {
             Log.e(HomeActivity::class.java.name, null, error)
 
-            ErrorDialog().show(supportFragmentManager, null)
+            ErrorDialog().show(supportFragmentManager, "error_dialog")
         }
     }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
-        val timeStamp = Instant.now().toString()
+        val name = Instant.now().toString()
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
-            timeStamp,
+            name,
             ".jpg",
             storageDir
         ).apply {
-            currentFileName = timeStamp
+            currentPhoto = PhotoData(
+                name = name,
+                filePath = absolutePath,
+            )
         }
     }
 
-    override fun invoke(text: String) {
-        Toast.makeText(this, "File name: $text", Toast.LENGTH_SHORT).show()
+    override fun onNameEntered(newName: String) {
+        currentPhoto?.let { (name, filePath) ->
+            if (name != newName) {
+                val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                File(filePath).renameTo(
+                    File.createTempFile(
+                        newName,
+                        ".jpg",
+                        storageDir
+                    )
+                )
+            }
+        }
+        currentPhoto = null
     }
 }

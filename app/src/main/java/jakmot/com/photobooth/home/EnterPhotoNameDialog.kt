@@ -7,21 +7,21 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import jakmot.com.photobooth.R
-import jakmot.com.photobooth.home.EnterPhotoNameDialog.OnNameEntered
+import jakmot.com.photobooth.home.EnterPhotoNameDialog.OnNameEnteredListener
 
 
 class EnterPhotoNameDialog : DialogFragment() {
     private var defaultName: String? = null
-    private var onNameEntered: OnNameEntered = OnNameEntered { }
+    private var onNameEnteredListener: OnNameEnteredListener = OnNameEnteredListener { }
 
-    fun interface OnNameEntered {
-        operator fun invoke(text: String)
+    fun interface OnNameEnteredListener {
+        fun onNameEntered(newName: String)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnNameEntered) {
-            onNameEntered = context
+        if (context is OnNameEnteredListener) {
+            onNameEnteredListener = context
         }
     }
 
@@ -45,7 +45,7 @@ class EnterPhotoNameDialog : DialogFragment() {
                 .setPositiveButton(
                     "Save"
                 ) { _, _ ->
-                    onNameEntered(fileNameInput.text.toString())
+                    onNameEnteredListener.onNameEntered(fileNameInput.text.toString())
                 }
                 .create()
         }
