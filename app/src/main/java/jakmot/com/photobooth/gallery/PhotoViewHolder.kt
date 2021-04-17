@@ -1,5 +1,6 @@
 package jakmot.com.photobooth.gallery
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
@@ -14,14 +15,19 @@ import kotlin.math.min
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val resources = itemView.resources
+    private val photoItem = itemView.findViewById<View>(R.id.photo_item)
     private val nameLabel = itemView.findViewById<TextView>(R.id.name)
     private val thumbnail = itemView.findViewById<ImageView>(R.id.thumbnail)
 
     fun bind(photoData: PhotoData) {
         val (name, filePath) = photoData
         nameLabel.text = name
-
         thumbnail.setImageBitmap(createThumbnail(filePath))
+        photoItem.setOnClickListener {
+            Intent(itemView.context,PhotoActivity::class.java)
+                .putExtra(PhotoActivity.FILE_PATH_EXTRA,filePath)
+                .let { itemView.context.startActivity(it) }
+        }
     }
 
     private fun createThumbnail(filePath: String): Bitmap {
