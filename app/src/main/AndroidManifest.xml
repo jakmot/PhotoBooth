@@ -24,7 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".gallery.GalleryActivity" />
+        <activity android:name=".gallery.GalleryActivity"
+            android:parentActivityName=".home.HomeActivity"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.jakmot.fileprovider"

@@ -11,6 +11,8 @@ class GalleryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gallery_activity)
+        actionBar?.setDisplayHomeAsUpEnabled(true);
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
         val photoDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -24,5 +26,4 @@ class GalleryActivity : AppCompatActivity() {
 
         recyclerView.adapter = PhotoAdapter(photoList)
     }
-
 }
