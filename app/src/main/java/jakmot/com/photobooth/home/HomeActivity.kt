@@ -26,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { wasPhotoSaved ->
             if (wasPhotoSaved) {
-                Toast.makeText(this, "Photo saved", Toast.LENGTH_SHORT).show()
+                EnterPhotoNameDialog().show(supportFragmentManager, null)
             } else {
                 Toast.makeText(this, "Operation canceled", Toast.LENGTH_SHORT).show()
             }

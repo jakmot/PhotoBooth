@@ -24,13 +24,13 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         nameLabel.text = name
         thumbnail.setImageBitmap(createThumbnail(filePath))
         photoItem.setOnClickListener {
-            Intent(itemView.context,PhotoActivity::class.java)
-                .putExtra(PhotoActivity.FILE_PATH_EXTRA,filePath)
+            Intent(itemView.context, PhotoActivity::class.java)
+                .putExtra(PhotoActivity.FILE_PATH_EXTRA, filePath)
                 .let { itemView.context.startActivity(it) }
         }
     }
 
-    private fun createThumbnail(filePath: String): Bitmap {
+    private fun createThumbnail(filePath: String): Bitmap? {
         val targetWidth = resources.getDimInPx(R.dimen.thumbnail_width)
         val targetHeight = resources.getDimInPx(R.dimen.thumbnail_height)
 
