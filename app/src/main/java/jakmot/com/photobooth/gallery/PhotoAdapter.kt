@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
 
-class PhotoAdapter(private val photoDataList: List<PhotoData>) :
+class PhotoAdapter(
+    private val photoDataList: List<PhotoData>,
+    private val onPhotoSelected: (PhotoData) -> Unit,
+) :
     RecyclerView.Adapter<PhotoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.photo_item, parent, false)
-            .let(::PhotoViewHolder)
+            .let { itemView -> PhotoViewHolder(itemView, onPhotoSelected) }
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {

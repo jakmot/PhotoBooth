@@ -1,5 +1,6 @@
 package jakmot.com.photobooth.gallery
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,15 @@ class GalleryActivity : AppCompatActivity() {
             )
         }.orEmpty()
 
-        recyclerView.adapter = PhotoAdapter(photoList)
+        recyclerView.adapter = PhotoAdapter(
+            photoList,
+            ::onPhotoSelected,
+        )
+    }
+
+    private fun onPhotoSelected(photoData: PhotoData) {
+        Intent(this, PhotoActivity::class.java)
+            .putExtra(PhotoActivity.FILE_PATH_EXTRA, photoData.filePath)
+            .let { startActivity(it) }
     }
 }

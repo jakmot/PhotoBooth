@@ -1,6 +1,5 @@
 package jakmot.com.photobooth.gallery
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
@@ -8,13 +7,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
-import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.common.getDimInPx
+import jakmot.com.photobooth.domain.PhotoData
 import java.time.LocalDateTime
 import kotlin.math.max
 import kotlin.math.min
 
-class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PhotoViewHolder(
+    itemView: View,
+    private val onPhotoSelected: (PhotoData) -> Unit,
+) : RecyclerView.ViewHolder(itemView) {
 
     private val resources = itemView.resources
     private val photoItem = itemView.findViewById<View>(R.id.photo_item)
@@ -31,11 +33,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             null
         }
         thumbnail.setImageBitmap(createThumbnail(filePath))
-        photoItem.setOnClickListener {
-            Intent(itemView.context, PhotoActivity::class.java)
-                .putExtra(PhotoActivity.FILE_PATH_EXTRA, filePath)
-                .let { itemView.context.startActivity(it) }
-        }
+        photoItem.setOnClickListener { onPhotoSelected(photoData) }
     }
 
     private fun createThumbnail(filePath: String): Bitmap? {
