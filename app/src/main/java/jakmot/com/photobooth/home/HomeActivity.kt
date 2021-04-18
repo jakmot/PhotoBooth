@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -105,20 +104,9 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
     }
 
     override fun onNameEntered(newName: String) {
-        currentPhoto?.let { (name, _, filePath, _) ->
-            if (name != newName) {
-                val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                val newFile = File(
-                    storageDir,
-                    "$newName$PHOTO_FILE_TYPE",
-                )
-                File(filePath).renameTo(newFile)
-            }
+        currentPhoto?.let { currentPhoto ->
+            photoFileManager.renameFile(currentPhoto.filePath, newName)
         }
         currentPhoto = null
-    }
-
-    companion object {
-        const val PHOTO_FILE_TYPE = ".jpg"
     }
 }

@@ -15,4 +15,15 @@ class FileManager(
             rootDirectory,
         )
     }
+
+    fun renameFile(filePath: String, newName: String) {
+        val file = File(filePath)
+        if (file.nameWithoutExtension != newName) {
+            val newFile = File(
+                rootDirectory,
+                "$newName$fileType",
+            )
+            File(filePath).renameTo(newFile)
+        }
+    }
 }
