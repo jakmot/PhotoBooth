@@ -7,9 +7,9 @@ import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
 
-class ExifTagSetter {
+class ExifTagSetterImpl : ExifTagSetter {
 
-    fun addDateTime(filePath: String, creationDate: LocalDateTime) {
+    override fun addDateTime(filePath: String, creationDate: LocalDateTime) {
         try {
             ExifInterface(File(filePath)).apply {
                 setAttribute(
@@ -22,4 +22,8 @@ class ExifTagSetter {
             Log.e(HomeActivity::class.java.name, null, exception)
         }
     }
+}
+
+interface ExifTagSetter {
+    fun addDateTime(filePath: String, creationDate: LocalDateTime)
 }

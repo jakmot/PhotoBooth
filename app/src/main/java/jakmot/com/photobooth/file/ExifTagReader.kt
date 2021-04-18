@@ -5,11 +5,10 @@ import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-class ExifTagReader {
+class ExifTagReaderImpl : ExifTagReader {
 
-    fun readDateTime(file: File): LocalDateTime? {
+    override fun readDateTime(file: File): LocalDateTime? {
         return try {
             val exif = ExifInterface(file)
             exif.getAttribute(ExifInterface.TAG_DATETIME)?.let { dateTime ->
@@ -25,4 +24,8 @@ class ExifTagReader {
         dateTime,
         EXIF_DATE_TIME_FORMATTER
     )
+}
+
+interface ExifTagReader {
+    fun readDateTime(file: File): LocalDateTime?
 }
