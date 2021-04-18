@@ -28,8 +28,6 @@ class GalleryViewModelTest : KoinTest {
         override fun readDateTime(file: File): LocalDateTime? = LocalDateTime.MAX
     }
 
-    private val galleryViewModel: GalleryViewModel by inject()
-
     @JvmField
     @RegisterExtension
     val koinTestExtension = KoinTestExtension.create {
@@ -40,6 +38,8 @@ class GalleryViewModelTest : KoinTest {
                 single(named("photoLocation")) { tempDir }
             })
     }
+
+    private val galleryViewModel: GalleryViewModel by inject()
 
     @Test
     fun `Should emit correct element On onInit`() {

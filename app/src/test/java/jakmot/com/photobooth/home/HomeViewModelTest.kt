@@ -28,8 +28,6 @@ class HomeViewModelTest : KoinTest {
         }
     }
 
-    private val homeViewModel: HomeViewModel by inject()
-
     @JvmField
     @RegisterExtension
     val koinTestExtension = KoinTestExtension.create {
@@ -41,6 +39,8 @@ class HomeViewModelTest : KoinTest {
                 factory<() -> LocalDateTime> { { LocalDateTime.MIN } }
             })
     }
+
+    private val homeViewModel: HomeViewModel by inject()
 
     @Test
     fun `Should emit temp file On onTakePhotoClicked`() {
