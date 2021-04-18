@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Photo Booth</string>
+    <string name="enter_photo_name_dialog_message">Enter name</string>
+    <string name="enter_photo_name_dialog_positive_button">Save</string>
+    <string name="file_provider_authority">com.jakmot.fileprovider</string>
+    <string name="no_camera_app_error_dialog_message">There is no application that can handle taking photos</string>
+    <string name="no_camera_app_error_dialog_positive_button">Close app</string>
+    <string name="take_photo_button">take a photo</string>
+    <string name="see_photos_button">see photos</string>
+    <string name="photo_content_description">photo</string>
+    <string name="photo_thumbnail_content_description">photo thumbnail</string>
 </resources>

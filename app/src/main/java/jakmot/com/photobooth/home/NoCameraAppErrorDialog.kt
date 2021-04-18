@@ -5,14 +5,15 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import jakmot.com.photobooth.R
 
 class NoCameraAppErrorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return requireActivity().let { activity ->
             AlertDialog.Builder(activity)
-                .setMessage("There is no application that can handle taking photos")
+                .setMessage(getString(R.string.no_camera_app_error_dialog_message))
                 .setPositiveButton(
-                    "Close app"
+                    getString(R.string.no_camera_app_error_dialog_positive_button)
                 ) { _, _ ->
                     activity.finish()
                 }

@@ -43,7 +43,7 @@
         android:layout_height="@dimen/thumbnail_height"
         android:layout_marginEnd="16dp"
         android:background="@color/black"
-        android:contentDescription="photo thumbnail"
+        android:contentDescription="@string/photo_thumbnail_content_description"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

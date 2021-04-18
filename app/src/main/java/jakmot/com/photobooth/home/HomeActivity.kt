@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
     private fun takePicture(imageFile: File) {
         val photoURI: Uri = FileProvider.getUriForFile(
             this,
-            "com.jakmot.fileprovider",
+            getString(R.string.file_provider_authority),
             imageFile
         )
         try {

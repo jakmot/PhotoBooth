@@ -40,10 +40,10 @@ class EnterPhotoNameDialog : DialogFragment() {
             val fileNameInput = dialogBody.findViewById<EditText>(R.id.fileName)
             fileNameInput.setText(defaultName)
             AlertDialog.Builder(activity)
-                .setMessage("Enter name")
+                .setMessage(getString(R.string.enter_photo_name_dialog_message))
                 .setView(dialogBody)
                 .setPositiveButton(
-                    "Save"
+                    getString(R.string.enter_photo_name_dialog_positive_button)
                 ) { _, _ ->
                     onNameEnteredListener.onNameEntered(fileNameInput.text.toString())
                 }
