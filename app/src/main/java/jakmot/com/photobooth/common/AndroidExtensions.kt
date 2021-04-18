@@ -1,4 +1,4 @@
-package jakmot.com.photobooth.utils
+package jakmot.com.photobooth.common
 
 import android.content.res.Resources
 import android.util.TypedValue

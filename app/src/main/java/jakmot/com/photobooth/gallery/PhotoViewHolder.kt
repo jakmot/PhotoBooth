@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
-import jakmot.com.photobooth.utils.getDimInPx
+import jakmot.com.photobooth.common.getDimInPx
 import java.time.LocalDateTime
 import kotlin.math.max
 import kotlin.math.min
