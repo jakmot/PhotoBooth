@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.file.ExifTagReader
+import org.koin.android.ext.android.inject
 import java.time.LocalDateTime
 
 class GalleryActivity : AppCompatActivity() {
+
+    private val exifTagReader: ExifTagReader by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +24,7 @@ class GalleryActivity : AppCompatActivity() {
         val photoDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
         val photoList = photoDirectory?.listFiles()?.map { file ->
-            val creationDate = ExifTagReader().readDateTime(file) ?: LocalDateTime.MIN
+            val creationDate = exifTagReader.readDateTime(file) ?: LocalDateTime.MIN
             PhotoData(
                 name = file.nameWithoutExtension,
                 fullName = file.name,

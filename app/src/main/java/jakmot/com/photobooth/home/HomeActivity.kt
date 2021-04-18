@@ -17,11 +17,14 @@ import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.file.ExifTagSetter
 import jakmot.com.photobooth.gallery.GalleryActivity
 import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
+import org.koin.android.ext.android.inject
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
 
 class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredListener {
+
+    private val exifTagSetter: ExifTagSetter by inject()
 
     private var currentPhoto: PhotoData? = null
 
@@ -99,7 +102,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
 
     private fun addCreationDate() {
         currentPhoto?.let { (_, _, filePath, creationDate) ->
-            ExifTagSetter().addDateTime(filePath, creationDate)
+            exifTagSetter.addDateTime(filePath, creationDate)
         }
     }
 
