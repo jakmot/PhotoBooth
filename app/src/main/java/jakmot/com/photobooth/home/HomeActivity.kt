@@ -12,13 +12,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
+import androidx.exifinterface.media.ExifInterface
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.gallery.GalleryActivity
 import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
+import jakmot.com.photobooth.utils.EXIF_DATE_TIME_FORMAT
 import java.io.File
 import java.io.IOException
-import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredListener {
 
@@ -27,6 +30,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { wasPhotoSaved ->
             if (wasPhotoSaved) {
+                addCreationDate()
                 EnterPhotoNameDialog()
                     .apply {
                         arguments = bundleOf(
@@ -79,33 +83,55 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
-        val name = Instant.now().toString()
+        val creationDate = LocalDateTime.now()
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
-            name,
-            ".jpg",
+            DEFAULT_FILE_PREFIX,
+            PHOTO_FILE_TYPE,
             storageDir
         ).apply {
             currentPhoto = PhotoData(
-                name = name,
+                name = nameWithoutExtension,
+                fullName = name,
                 filePath = absolutePath,
+                creationDate = creationDate,
             )
         }
     }
 
+    private fun addCreationDate() {
+        currentPhoto?.let { (_, _, filePath, creationDate) ->
+            try {
+                ExifInterface(File(filePath)).apply {
+                    setAttribute(
+                        ExifInterface.TAG_DATETIME, DateTimeFormatter.ofPattern(
+                            EXIF_DATE_TIME_FORMAT
+                        ).format(creationDate)
+                    )
+                    saveAttributes()
+                }
+            } catch (exception: IOException) {
+                Log.e(HomeActivity::class.java.name, null, exception)
+            }
+        }
+    }
+
     override fun onNameEntered(newName: String) {
-        currentPhoto?.let { (name, filePath) ->
+        currentPhoto?.let { (name, _, filePath, _) ->
             if (name != newName) {
                 val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                File(filePath).renameTo(
-                    File.createTempFile(
-                        newName,
-                        ".jpg",
-                        storageDir
-                    )
+                val newFile = File(
+                    storageDir,
+                    "$newName$PHOTO_FILE_TYPE",
                 )
+                File(filePath).renameTo(newFile)
             }
         }
         currentPhoto = null
+    }
+
+    companion object {
+        const val DEFAULT_FILE_PREFIX = "IMG"
+        const val PHOTO_FILE_TYPE = ".jpg"
     }
 }

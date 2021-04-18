@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.utils.getDimInPx
+import java.time.LocalDateTime
 import kotlin.math.max
 import kotlin.math.min
 
@@ -17,12 +18,18 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val resources = itemView.resources
     private val photoItem = itemView.findViewById<View>(R.id.photo_item)
-    private val nameLabel = itemView.findViewById<TextView>(R.id.name)
+    private val nameLabel = itemView.findViewById<TextView>(R.id.nameLabel)
+    private val createdLabel = itemView.findViewById<TextView>(R.id.createdLabel)
     private val thumbnail = itemView.findViewById<ImageView>(R.id.thumbnail)
 
     fun bind(photoData: PhotoData) {
-        val (name, filePath) = photoData
-        nameLabel.text = name
+        val (_, fullName, filePath, creationDate) = photoData
+        nameLabel.text = fullName
+        createdLabel.text = if (creationDate != LocalDateTime.MIN) {
+            creationDate.toString()
+        } else {
+            null
+        }
         thumbnail.setImageBitmap(createThumbnail(filePath))
         photoItem.setOnClickListener {
             Intent(itemView.context, PhotoActivity::class.java)
