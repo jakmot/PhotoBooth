@@ -1,6 +1,8 @@
 package jakmot.com.photobooth.di
 
 import android.os.Environment
+import jakmot.com.photobooth.debug.Logger
+import jakmot.com.photobooth.debug.SimpleLogger
 import jakmot.com.photobooth.file.*
 import jakmot.com.photobooth.gallery.GalleryViewModel
 import jakmot.com.photobooth.home.HomeViewModel
@@ -25,7 +27,9 @@ fun appModule() = module {
             filePrefix = get(named("filePrefix")),
         )
     }
+    single<Logger> { SimpleLogger() }
     factory<() -> LocalDateTime> { { LocalDateTime.now() } }
-    viewModel { HomeViewModel(get(), get(named("photoFileManager")), get()) }
+
+    viewModel { HomeViewModel(get(), get(named("photoFileManager")), get(), get()) }
     viewModel { GalleryViewModel(get(), get(named("photoFileManager"))) }
 }

@@ -1,10 +1,10 @@
 package jakmot.com.photobooth.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import jakmot.com.photobooth.common.Event
+import jakmot.com.photobooth.debug.Logger
 import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.file.ExifTagSetter
 import jakmot.com.photobooth.file.FileManager
@@ -15,6 +15,7 @@ class HomeViewModel(
     private val exifTagSetter: ExifTagSetter,
     private val photoFileManager: FileManager,
     private val getCurrentTime: () -> LocalDateTime,
+    private val logger: Logger,
 ) : ViewModel() {
 
     private var currentPhoto: PhotoData? = null
@@ -70,7 +71,7 @@ class HomeViewModel(
     }
 
     fun onFailToTakeAPhoto(error: Exception) {
-//        TODO Extract logger Log.e(HomeActivity::class.java.name, null, error)
+        logger.error(error)
         onPhotoCanceled()
     }
 }

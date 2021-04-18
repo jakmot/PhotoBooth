@@ -89,5 +89,4 @@ class HomeViewModelTest : KoinTest {
 
         assertThat(tempDir.list()).isEmpty()
     }
-
 }
