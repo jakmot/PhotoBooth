@@ -1,5 +1,6 @@
 package jakmot.com.photobooth.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,7 +26,7 @@ class HomeViewModel(
 
     fun getPhotoDefaultName(): LiveData<Event<String?>> = photoDefaultName
 
-    fun onTakePhotoClicked(){
+    fun onTakePhotoClicked() {
         tempFileCreatedEvent.value = Event(createImageFile())
     }
 
@@ -46,6 +47,13 @@ class HomeViewModel(
         photoDefaultName.value = Event(currentPhoto?.name)
     }
 
+    fun onPhotoCanceled() {
+        currentPhoto?.let {
+            photoFileManager.deleteFile(it.filePath)
+        }
+        currentPhoto = null
+    }
+
     private fun addCreationDate() {
         currentPhoto?.let { (_, _, filePath, creationDate) ->
             exifTagSetter.addDateTime(filePath, creationDate)
@@ -57,5 +65,10 @@ class HomeViewModel(
             photoFileManager.renameFile(currentPhoto.filePath, newName)
         }
         currentPhoto = null
+    }
+
+    fun onFailToTakeAPhoto(error: Exception) {
+        Log.e(HomeActivity::class.java.name, null, error)
+        onPhotoCanceled()
     }
 }

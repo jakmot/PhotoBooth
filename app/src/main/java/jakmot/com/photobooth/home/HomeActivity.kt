@@ -26,6 +26,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
             if (wasPhotoSaved) {
                 homeViewModel.onPhotoTaken()
             } else {
+                homeViewModel.onPhotoCanceled()
                 showFailedToTakePhotoMessage()
             }
         }
@@ -53,14 +54,6 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         }
     }
 
-    private fun displayEnterPhoneNameDialog(defaultName: String?) {
-        EnterPhotoNameDialog()
-            .withArguments(
-                EnterPhotoNameDialog.DEFAULT_NAME_ARG to defaultName
-            )
-            .show(supportFragmentManager, "enter_phone_number_dialog")
-    }
-
     private fun takePicture(imageFile: File) {
         val photoURI: Uri = FileProvider.getUriForFile(
             this,
@@ -70,9 +63,17 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         try {
             takePicture.launch(photoURI)
         } catch (error: ActivityNotFoundException) {
-            Log.e(HomeActivity::class.java.name, null, error)
+            homeViewModel.onFailToTakeAPhoto(error)
             showErrorDialog()
         }
+    }
+
+    private fun displayEnterPhoneNameDialog(defaultName: String?) {
+        EnterPhotoNameDialog()
+            .withArguments(
+                EnterPhotoNameDialog.DEFAULT_NAME_ARG to defaultName
+            )
+            .show(supportFragmentManager, "enter_phone_number_dialog")
     }
 
     private fun showErrorDialog() {

@@ -27,5 +27,10 @@ class FileManager(
         }
     }
 
+    fun deleteFile(filePath: String) {
+        File(filePath).delete()
+    }
+
     fun listAllFiles(): Array<out File> = rootDirectory.listFiles().orEmpty()
+
 }
