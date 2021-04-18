@@ -1,9 +1,9 @@
 package jakmot.com.photobooth.gallery
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import jakmot.com.photobooth.R
+import jakmot.com.photobooth.common.layoutInflater
+import jakmot.com.photobooth.databinding.PhotoItemBinding
 import jakmot.com.photobooth.domain.PhotoData
 
 class PhotoAdapter(
@@ -13,9 +13,8 @@ class PhotoAdapter(
     var photoDataList: List<PhotoData> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        return LayoutInflater.from(parent.context)
-            .inflate(R.layout.photo_item, parent, false)
-            .let { itemView -> PhotoViewHolder(itemView, onPhotoSelected) }
+        val binding = PhotoItemBinding.inflate(parent.layoutInflater())
+        return PhotoViewHolder(binding, onPhotoSelected)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {

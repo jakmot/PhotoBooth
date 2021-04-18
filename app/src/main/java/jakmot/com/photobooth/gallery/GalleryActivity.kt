@@ -3,8 +3,7 @@ package jakmot.com.photobooth.gallery
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import jakmot.com.photobooth.R
+import jakmot.com.photobooth.databinding.GalleryActivityBinding
 import jakmot.com.photobooth.domain.PhotoData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -14,11 +13,12 @@ class GalleryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.gallery_activity)
+        val binding = GalleryActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val photoAdapter = PhotoAdapter(::onPhotoSelected)
-        findViewById<RecyclerView>(R.id.recyclerView).apply {
+        binding.recyclerView.apply {
             adapter = photoAdapter
         }
         galleryViewModel.getPhotos().observe(this) { photos ->

@@ -2,20 +2,20 @@ package jakmot.com.photobooth.gallery
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import jakmot.com.photobooth.R
+import jakmot.com.photobooth.databinding.PhotoActivityBinding
 
 class PhotoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.photo_activity)
+        val binding = PhotoActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val filePath = intent.extras?.getString(FILE_PATH_EXTRA)
 
-        findViewById<ImageView>(R.id.photo).setImageBitmap(
+        binding.photo.setImageBitmap(
             BitmapFactory.decodeFile(filePath)
         )
     }

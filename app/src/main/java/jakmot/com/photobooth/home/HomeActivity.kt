@@ -4,8 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +11,7 @@ import androidx.core.content.FileProvider
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.common.observeEvent
 import jakmot.com.photobooth.common.withArguments
+import jakmot.com.photobooth.databinding.HomeActivityBinding
 import jakmot.com.photobooth.gallery.GalleryActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -37,10 +36,11 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_activity)
+        val binding = HomeActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        findViewById<Button>(R.id.takePhoto).setOnClickListener { homeViewModel.onTakePhotoClicked() }
-        findViewById<Button>(R.id.seePhotos).setOnClickListener {
+        binding.takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
+        binding.seePhotos.setOnClickListener {
             startActivity(
                 Intent(this, GalleryActivity::class.java)
             )

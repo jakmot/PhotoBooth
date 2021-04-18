@@ -3,10 +3,10 @@ package jakmot.com.photobooth.home
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.databinding.EnterPhotoNameDialogBinding
 import jakmot.com.photobooth.home.EnterPhotoNameDialog.OnNameEnteredListener
 
 
@@ -25,7 +25,6 @@ class EnterPhotoNameDialog : DialogFragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
@@ -35,17 +34,15 @@ class EnterPhotoNameDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return requireActivity().let { activity ->
-            val layoutInflater = activity.layoutInflater
-            val dialogBody = layoutInflater.inflate(R.layout.enter_photo_name_dialog, null)
-            val fileNameInput = dialogBody.findViewById<EditText>(R.id.fileName)
-            fileNameInput.setText(defaultName)
+            val binding = EnterPhotoNameDialogBinding.inflate(activity.layoutInflater)
+            binding.fileName.setText(defaultName)
             AlertDialog.Builder(activity)
                 .setMessage(getString(R.string.enter_photo_name_dialog_message))
-                .setView(dialogBody)
+                .setView(binding.root)
                 .setPositiveButton(
                     getString(R.string.enter_photo_name_dialog_positive_button)
                 ) { _, _ ->
-                    onNameEnteredListener.onNameEntered(fileNameInput.text.toString())
+                    onNameEnteredListener.onNameEntered(binding.fileName.text.toString())
                 }
                 .create()
         }
