@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import java.time.LocalDateTime
 
 fun appModule() = module {
     single<ExifTagSetter> { ExifTagSetterImpl() }
@@ -24,6 +25,7 @@ fun appModule() = module {
             filePrefix = get(named("filePrefix")),
         )
     }
-    viewModel { HomeViewModel(get(), get(named("photoFileManager"))) }
+    factory<() -> LocalDateTime> { { LocalDateTime.now() } }
+    viewModel { HomeViewModel(get(), get(named("photoFileManager")), get()) }
     viewModel { GalleryViewModel(get(), get(named("photoFileManager"))) }
 }

@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 
 
 @ExtendWith(InstantExecutorExtension::class)
-internal class GalleryViewModelTest : KoinTest {
+class GalleryViewModelTest : KoinTest {
 
     @TempDir
     lateinit var tempDir: File
@@ -33,11 +33,10 @@ internal class GalleryViewModelTest : KoinTest {
     @JvmField
     @RegisterExtension
     val koinTestExtension = KoinTestExtension.create {
-
         modules(
             appModule(),
             module(override = true) {
-                single<ExifTagReader> { exifTagReaderFake }
+                single { exifTagReaderFake }
                 single(named("photoLocation")) { tempDir }
             })
     }

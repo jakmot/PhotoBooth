@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
+/**
+ * Required for testing ViewModels, see: https://jeroenmols.com/blog/2019/01/17/livedatajunit5/
+ */
 class InstantExecutorExtension : BeforeEachCallback, AfterEachCallback {
 
     override fun beforeEach(context: ExtensionContext?) {

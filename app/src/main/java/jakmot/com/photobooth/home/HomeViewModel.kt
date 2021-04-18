@@ -14,6 +14,7 @@ import java.time.LocalDateTime
 class HomeViewModel(
     private val exifTagSetter: ExifTagSetter,
     private val photoFileManager: FileManager,
+    private val getCurrentTime: () -> LocalDateTime,
 ) : ViewModel() {
 
     private var currentPhoto: PhotoData? = null
@@ -26,12 +27,13 @@ class HomeViewModel(
 
     fun getPhotoDefaultName(): LiveData<Event<String?>> = photoDefaultName
 
+
     fun onTakePhotoClicked() {
         tempFileCreatedEvent.value = Event(createImageFile())
     }
 
     private fun createImageFile(): File {
-        val creationDate = LocalDateTime.now()
+        val creationDate = getCurrentTime()
         return photoFileManager.createTempFile().apply {
             currentPhoto = PhotoData(
                 name = nameWithoutExtension,
@@ -68,7 +70,7 @@ class HomeViewModel(
     }
 
     fun onFailToTakeAPhoto(error: Exception) {
-        Log.e(HomeActivity::class.java.name, null, error)
+//        TODO Extract logger Log.e(HomeActivity::class.java.name, null, error)
         onPhotoCanceled()
     }
 }
