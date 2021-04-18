@@ -24,7 +24,6 @@ class HomeViewModelTest : KoinTest {
 
     private var exifTagSetter: ExifTagSetter = object : ExifTagSetter {
         override fun addDateTime(filePath: String, creationDate: LocalDateTime) {
-
         }
     }
 

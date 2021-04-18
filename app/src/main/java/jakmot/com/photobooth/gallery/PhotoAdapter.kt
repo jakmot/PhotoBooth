@@ -13,7 +13,7 @@ class PhotoAdapter(
     var photoDataList: List<PhotoData> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val binding = PhotoItemBinding.inflate(parent.layoutInflater())
+        val binding = PhotoItemBinding.inflate(parent.layoutInflater(), parent, false)
         return PhotoViewHolder(binding, onPhotoSelected)
     }
 
