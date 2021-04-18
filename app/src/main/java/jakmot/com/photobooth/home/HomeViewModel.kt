@@ -19,7 +19,11 @@ class HomeViewModel(
 
     private val tempFileCreatedEvent = MutableLiveData<Event<File>>()
 
+    private val photoDefaultName = MutableLiveData<Event<String?>>()
+
     fun getTempFileCreatedEvent(): LiveData<Event<File>> = tempFileCreatedEvent
+
+    fun getPhotoDefaultName(): LiveData<Event<String?>> = photoDefaultName
 
     fun onTakePhotoClicked(){
         tempFileCreatedEvent.value = Event(createImageFile())
@@ -35,5 +39,23 @@ class HomeViewModel(
                 creationDate = creationDate,
             )
         }
+    }
+
+    fun onPhotoTaken() {
+        addCreationDate()
+        photoDefaultName.value = Event(currentPhoto?.name)
+    }
+
+    private fun addCreationDate() {
+        currentPhoto?.let { (_, _, filePath, creationDate) ->
+            exifTagSetter.addDateTime(filePath, creationDate)
+        }
+    }
+
+    fun onNameEntered(newName: String) {
+        currentPhoto?.let { currentPhoto ->
+            photoFileManager.renameFile(currentPhoto.filePath, newName)
+        }
+        currentPhoto = null
     }
 }

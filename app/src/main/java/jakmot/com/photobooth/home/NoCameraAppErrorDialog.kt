@@ -6,20 +6,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
-class ErrorDialog : DialogFragment() {
-    private var message: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            message = bundle.getString(MESSAGE_ARG)
-        }
-    }
-
+class NoCameraAppErrorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return requireActivity().let { activity ->
             AlertDialog.Builder(activity)
-                .setMessage(message ?: "Something went wrong")
+                .setMessage("There is no application that can handle taking photos")
                 .setPositiveButton(
                     "Close app"
                 ) { _, _ ->
@@ -32,9 +23,5 @@ class ErrorDialog : DialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         requireActivity().finish()
-    }
-
-    companion object {
-        const val MESSAGE_ARG = "MESSAGE_ARG"
     }
 }
