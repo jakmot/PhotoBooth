@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         }
 
     private fun showFailedToTakePhotoMessage() {
-        Toast.makeText(this, "Operation canceled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.photo_not_taken_message), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +39,20 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         val binding = HomeActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupViews(binding)
+        observeViewModel()
+    }
+
+    private fun setupViews(binding: HomeActivityBinding) {
         binding.takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
         binding.seePhotos.setOnClickListener {
             startActivity(
                 Intent(this, GalleryActivity::class.java)
             )
         }
+    }
+
+    private fun observeViewModel() {
         homeViewModel.getTempFileCreatedEvent().observeEvent(this) { imageFile ->
             takePicture(imageFile)
         }
@@ -68,16 +76,16 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         }
     }
 
+    private fun showErrorDialog() {
+        NoCameraAppErrorDialog().show(supportFragmentManager, "error_dialog")
+    }
+
     private fun displayEnterPhoneNameDialog(defaultName: String?) {
         EnterPhotoNameDialog()
             .withArguments(
                 EnterPhotoNameDialog.DEFAULT_NAME_ARG to defaultName
             )
             .show(supportFragmentManager, "enter_phone_number_dialog")
-    }
-
-    private fun showErrorDialog() {
-        NoCameraAppErrorDialog().show(supportFragmentManager, "error_dialog")
     }
 
     override fun onNameEntered(newName: String) {

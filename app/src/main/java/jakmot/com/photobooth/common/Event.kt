@@ -21,5 +21,4 @@ inline fun <T> LiveData<Event<T>>.observeEvent(
     crossinline observer: (T) -> Unit
 ) {
     observe(owner, { event -> event.content?.let(observer) })
-
 }

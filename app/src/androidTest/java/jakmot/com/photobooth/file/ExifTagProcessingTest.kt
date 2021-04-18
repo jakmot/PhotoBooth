@@ -2,6 +2,7 @@ package jakmot.com.photobooth.file
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import instrContext
+import jakmot.com.photobooth.debug.Logger
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -19,9 +20,14 @@ class ExifTagProcessingTest {
     @get:Rule
     val folder = TemporaryFolder()
 
-    private val exifTagSetter: ExifTagSetter = ExifTagSetterImpl()
+    private val loggerFake = object : Logger{
+        override fun error(exception: Exception) {
+        }
+    }
 
-    private val exifTagReader: ExifTagReader = ExifTagReaderImpl()
+    private val exifTagSetter: ExifTagSetter = ExifTagSetterImpl(loggerFake)
+
+    private val exifTagReader: ExifTagReader = ExifTagReaderImpl(loggerFake)
 
     @Test
     fun shouldAddDateTimeTagToFile() {

@@ -1,13 +1,12 @@
 package jakmot.com.photobooth.file
 
-import android.util.Log
 import androidx.exifinterface.media.ExifInterface
-import jakmot.com.photobooth.home.HomeActivity
+import jakmot.com.photobooth.debug.Logger
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
 
-class ExifTagSetterImpl : ExifTagSetter {
+class ExifTagSetterImpl(private val logger: Logger) : ExifTagSetter {
 
     override fun addDateTime(filePath: String, creationDate: LocalDateTime) {
         try {
@@ -19,7 +18,7 @@ class ExifTagSetterImpl : ExifTagSetter {
                 saveAttributes()
             }
         } catch (exception: IOException) {
-            Log.e(HomeActivity::class.java.name, null, exception)
+            logger.error(exception)
         }
     }
 }

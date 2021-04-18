@@ -1,12 +1,12 @@
 package jakmot.com.photobooth.file
 
-import android.util.Log
 import androidx.exifinterface.media.ExifInterface
+import jakmot.com.photobooth.debug.Logger
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
 
-class ExifTagReaderImpl : ExifTagReader {
+class ExifTagReaderImpl(private val logger: Logger) : ExifTagReader {
 
     override fun readDateTime(file: File): LocalDateTime? {
         return try {
@@ -15,7 +15,7 @@ class ExifTagReaderImpl : ExifTagReader {
                 parseDateTime(dateTime)
             }
         } catch (exception: IOException) {
-            Log.e(this::class.java.name, null, exception)
+            logger.error(exception)
             null
         }
     }
