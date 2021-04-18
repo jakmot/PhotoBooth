@@ -15,9 +15,11 @@ import androidx.core.os.bundleOf
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.file.ExifTagSetter
+import jakmot.com.photobooth.file.FileManager
 import jakmot.com.photobooth.gallery.GalleryActivity
 import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
@@ -25,6 +27,7 @@ import java.time.LocalDateTime
 class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredListener {
 
     private val exifTagSetter: ExifTagSetter by inject()
+    private val photoFileManager: FileManager by inject(named("photoFileManager"))
 
     private var currentPhoto: PhotoData? = null
 
@@ -85,12 +88,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
     @Throws(IOException::class)
     private fun createImageFile(): File {
         val creationDate = LocalDateTime.now()
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            DEFAULT_FILE_PREFIX,
-            PHOTO_FILE_TYPE,
-            storageDir
-        ).apply {
+        return photoFileManager.createTempFile().apply {
             currentPhoto = PhotoData(
                 name = nameWithoutExtension,
                 fullName = name,
@@ -121,7 +119,6 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
     }
 
     companion object {
-        const val DEFAULT_FILE_PREFIX = "IMG"
         const val PHOTO_FILE_TYPE = ".jpg"
     }
 }
