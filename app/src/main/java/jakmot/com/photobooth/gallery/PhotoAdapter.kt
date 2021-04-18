@@ -7,10 +7,10 @@ import jakmot.com.photobooth.R
 import jakmot.com.photobooth.domain.PhotoData
 
 class PhotoAdapter(
-    private val photoDataList: List<PhotoData>,
     private val onPhotoSelected: (PhotoData) -> Unit,
-) :
-    RecyclerView.Adapter<PhotoViewHolder>() {
+) : RecyclerView.Adapter<PhotoViewHolder>() {
+
+    var photoDataList: List<PhotoData> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         return LayoutInflater.from(parent.context)

@@ -4,6 +4,7 @@ import android.os.Environment
 import jakmot.com.photobooth.file.ExifTagReader
 import jakmot.com.photobooth.file.ExifTagSetter
 import jakmot.com.photobooth.file.FileManager
+import jakmot.com.photobooth.gallery.GalleryViewModel
 import jakmot.com.photobooth.home.HomeViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,4 +27,5 @@ fun appModule() = module {
         )
     }
     viewModel { HomeViewModel(get(), get(named("photoFileManager"))) }
+    viewModel { GalleryViewModel(get(), get(named("photoFileManager"))) }
 }

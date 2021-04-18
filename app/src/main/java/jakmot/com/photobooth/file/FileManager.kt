@@ -26,4 +26,6 @@ class FileManager(
             File(filePath).renameTo(newFile)
         }
     }
+
+    fun listAllFiles(): Array<out File> = rootDirectory.listFiles().orEmpty()
 }
