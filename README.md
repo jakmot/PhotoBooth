@@ -1,6 +1,7 @@
 # PhotoBooth
 Application that allows to take photos and see previously taken photos.
-![caption](demo.mp4)
+
+https://user-images.githubusercontent.com/31387943/115153407-fcede900-a075-11eb-9ed9-d1e13693598d.mp4
 
 [Trello board](https://trello.com/b/RHjW77Xi)
 
