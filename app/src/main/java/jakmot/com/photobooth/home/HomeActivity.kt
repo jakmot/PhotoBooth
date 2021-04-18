@@ -12,21 +12,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import jakmot.com.photobooth.R
+import jakmot.com.photobooth.common.observeEvent
 import jakmot.com.photobooth.domain.PhotoData
 import jakmot.com.photobooth.file.ExifTagSetter
 import jakmot.com.photobooth.file.FileManager
 import jakmot.com.photobooth.gallery.GalleryActivity
 import jakmot.com.photobooth.home.ErrorDialog.Companion.MESSAGE_ARG
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
-import java.io.File
-import java.io.IOException
-import java.time.LocalDateTime
 
 class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredListener {
 
     private val exifTagSetter: ExifTagSetter by inject()
     private val photoFileManager: FileManager by inject(named("photoFileManager"))
+
+    private val homeViewModel: HomeViewModel by viewModel()
 
     private var currentPhoto: PhotoData? = null
 
@@ -50,7 +51,7 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
-        findViewById<Button>(R.id.takePhoto).setOnClickListener { onTakePhotoClicked() }
+        findViewById<Button>(R.id.takePhoto).setOnClickListener { homeViewModel.onTakePhotoClicked() }
         findViewById<Button>(R.id.seePhotos).setOnClickListener {
             startActivity(
                 Intent(
@@ -59,16 +60,18 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
                 )
             )
         }
-    }
-
-    private fun onTakePhotoClicked() {
-        try {
-            val imageFile = createImageFile()
+        homeViewModel.getTempFileCreatedEvent().observeEvent(this) { imageFile ->
             val photoURI: Uri = FileProvider.getUriForFile(
                 this,
                 "com.jakmot.fileprovider",
                 imageFile
             )
+            takePicture(photoURI)
+        }
+    }
+
+    private fun takePicture(photoURI: Uri) {
+        try {
             takePicture.launch(photoURI)
         } catch (error: ActivityNotFoundException) {
             Log.e(HomeActivity::class.java.name, null, error)
@@ -77,23 +80,6 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
                     MESSAGE_ARG to "No camera app"
                 )
             }.show(supportFragmentManager, "error_dialog")
-        } catch (error: IOException) {
-            Log.e(HomeActivity::class.java.name, null, error)
-
-            ErrorDialog().show(supportFragmentManager, "error_dialog")
-        }
-    }
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        val creationDate = LocalDateTime.now()
-        return photoFileManager.createTempFile().apply {
-            currentPhoto = PhotoData(
-                name = nameWithoutExtension,
-                fullName = name,
-                filePath = absolutePath,
-                creationDate = creationDate,
-            )
         }
     }
 
