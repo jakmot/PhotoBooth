@@ -1,10 +1,10 @@
-package jakmot.com.photobooth.home
+package jakmot.com.photobooth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import jakmot.com.photobooth.R
+import jakmot.com.photobooth.home.HomeFragment
 
-class HomeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

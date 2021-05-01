@@ -16,7 +16,7 @@
         android:theme="@style/Theme.PhotoBooth"
         android:requestLegacyExternalStorage="true"
         tools:ignore="AllowBackup">
-        <activity android:name=".home.HomeActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".gallery.GalleryActivity"
-            android:parentActivityName=".home.HomeActivity"/>
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".gallery.PhotoActivity"
             android:parentActivityName=".gallery.GalleryActivity"/>
         <provider
