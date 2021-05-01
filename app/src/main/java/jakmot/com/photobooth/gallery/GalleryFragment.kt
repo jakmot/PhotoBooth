@@ -31,7 +31,7 @@ class GalleryFragment : Fragment() {
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val photoAdapter = PhotoAdapter(::onPhotoSelected)
-        binding!!.recyclerView.apply {
+        requireBinding().recyclerView.apply {
             adapter = photoAdapter
         }
         galleryViewModel.getPhotos().observe(this.viewLifecycleOwner) { photos ->
@@ -45,6 +45,11 @@ class GalleryFragment : Fragment() {
 
         findNavController().navigate(action)
     }
+
+    private fun requireBinding(): GalleryFragmentBinding =
+        binding
+            ?: throw IllegalStateException("Accessing binding outside of Fragment lifecycle: GalleryFragment")
+
 
     override fun onDestroy() {
         super.onDestroy()

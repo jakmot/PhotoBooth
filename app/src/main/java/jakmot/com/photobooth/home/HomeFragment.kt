@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
 
     private fun showFailedToTakePhotoMessage() {
         Snackbar.make(
-            binding!!.root,
+            requireBinding().root,
             getString(R.string.photo_not_taken_message),
             Snackbar.LENGTH_SHORT
         ).show()
@@ -47,19 +47,23 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = HomeFragmentBinding.inflate(layoutInflater, container, false)
-        return binding!!.root
+        return HomeFragmentBinding.inflate(layoutInflater, container, false)
+            .also {
+                binding = it
+            }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupViews(binding!!)
+        setupViews()
         observeViewModel()
     }
 
-    private fun setupViews(binding: HomeFragmentBinding) {
-        binding.takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
-        binding.seePhotos.setOnClickListener {
-            findNavController().navigate(R.id.galleryFragment)
+    private fun setupViews() {
+        with(requireBinding()) {
+            takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
+            seePhotos.setOnClickListener {
+                findNavController().navigate(R.id.galleryFragment)
+            }
         }
     }
 
@@ -109,11 +113,15 @@ class HomeFragment : Fragment() {
 
     private fun showPhotoTakenMessage() {
         Snackbar.make(
-            binding!!.root,
+            requireBinding().root,
             getString(R.string.photo_taken_message),
             Snackbar.LENGTH_SHORT
         ).show()
     }
+
+    private fun requireBinding(): HomeFragmentBinding =
+        binding
+            ?: throw IllegalStateException("Accessing binding outside of Fragment lifecycle: HomeFragment")
 
     override fun onDestroyView() {
         super.onDestroyView()

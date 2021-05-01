@@ -28,11 +28,18 @@ class PhotoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
-
         Glide.with(this)
             .load(args.photoPath)
-            .into(binding!!.photo)
+            .into(requireBinding().photo)
+    }
+
+    private fun requireBinding(): PhotoFragmentBinding =
+        binding
+            ?: throw IllegalStateException("Accessing binding outside of Fragment lifecycle: PhotoFragment")
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
