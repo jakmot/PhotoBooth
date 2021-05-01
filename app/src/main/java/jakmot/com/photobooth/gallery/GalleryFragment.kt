@@ -41,8 +41,8 @@ class GalleryFragment : Fragment() {
     }
 
     private fun onPhotoSelected(photoData: PhotoData) {
-        Intent(this.activity, PhotoActivity::class.java)
-            .putExtra(PhotoActivity.FILE_PATH_EXTRA, photoData.filePath)
+        Intent(this.activity, PhotoFragment::class.java)
+            .putExtra(PhotoFragment.FILE_PATH_EXTRA, photoData.filePath)
             .let { startActivity(it) }
     }
 
