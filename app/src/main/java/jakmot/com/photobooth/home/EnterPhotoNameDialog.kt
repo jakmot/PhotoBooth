@@ -44,7 +44,9 @@ class EnterPhotoNameDialog : DialogFragment() {
                 ) { _, _ ->
                     onNameEnteredListener.onNameEntered(binding.fileName.text.toString())
                 }
-                .create()
+                .create().apply {
+                    setCanceledOnTouchOutside(false)
+                }
         }
     }
 

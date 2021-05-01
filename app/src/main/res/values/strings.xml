@@ -10,4 +10,5 @@
     <string name="photo_content_description">photo</string>
     <string name="photo_thumbnail_content_description">photo thumbnail</string>
     <string name="photo_not_taken_message">Operation canceled</string>
+    <string name="photo_taken_message">Photo was saved to gallery</string>
 </resources>

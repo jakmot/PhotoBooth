@@ -4,10 +4,10 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.google.android.material.snackbar.Snackbar
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.common.observeEvent
 import jakmot.com.photobooth.common.withArguments
@@ -19,6 +19,7 @@ import java.io.File
 class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredListener {
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private lateinit var binding: HomeActivityBinding
 
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { wasPhotoSaved ->
@@ -31,12 +32,16 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
         }
 
     private fun showFailedToTakePhotoMessage() {
-        Toast.makeText(this, getString(R.string.photo_not_taken_message), Toast.LENGTH_SHORT).show()
+        Snackbar.make(
+            binding.root,
+            getString(R.string.photo_not_taken_message),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = HomeActivityBinding.inflate(layoutInflater)
+        binding = HomeActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupViews(binding)
@@ -90,5 +95,13 @@ class HomeActivity : AppCompatActivity(), EnterPhotoNameDialog.OnNameEnteredList
 
     override fun onNameEntered(newName: String) {
         homeViewModel.onNameEntered(newName)
+        showPhotoTakenMessage()
+    }
+    private fun showPhotoTakenMessage() {
+        Snackbar.make(
+            binding.root,
+            getString(R.string.photo_taken_message),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 }
