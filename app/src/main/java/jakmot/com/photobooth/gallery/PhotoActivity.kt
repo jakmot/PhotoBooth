@@ -1,8 +1,8 @@
 package jakmot.com.photobooth.gallery
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import jakmot.com.photobooth.databinding.PhotoActivityBinding
 
 class PhotoActivity : AppCompatActivity() {
@@ -15,9 +15,9 @@ class PhotoActivity : AppCompatActivity() {
 
         val filePath = intent.extras?.getString(FILE_PATH_EXTRA)
 
-        binding.photo.setImageBitmap(
-            BitmapFactory.decodeFile(filePath)
-        )
+        Glide.with(this)
+            .load(filePath)
+            .into(binding.photo)
     }
 
     companion object {

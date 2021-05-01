@@ -1,8 +1,8 @@
 package jakmot.com.photobooth.gallery
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.common.getDimInPx
 import jakmot.com.photobooth.databinding.PhotoItemBinding
@@ -23,7 +23,10 @@ class PhotoViewHolder(
         with(binding) {
             nameLabel.text = fullName
             createdLabel.text = prepareCreationDate(creationDate)
-            thumbnail.setImageBitmap(createThumbnail(filePath))
+            Glide.with(binding.root.context)
+                .load(filePath)
+                .thumbnail(calculateScale(filePath))
+                .into(thumbnail)
             photoItem.setOnClickListener { onPhotoSelected(photoData) }
         }
     }
@@ -35,11 +38,11 @@ class PhotoViewHolder(
             null
         }
 
-    private fun createThumbnail(filePath: String): Bitmap? {
+    private fun calculateScale(filePath: String): Float {
         val targetWidth = resources.getDimInPx(R.dimen.thumbnail_width)
         val targetHeight = resources.getDimInPx(R.dimen.thumbnail_height)
 
-        val bmOptions = BitmapFactory.Options().apply {
+        return with(BitmapFactory.Options()) {
             inJustDecodeBounds = true
 
             BitmapFactory.decodeFile(filePath, this)
@@ -50,11 +53,8 @@ class PhotoViewHolder(
             val widthRatio = photoWidth / targetWidth
             val heightRatio = photoHeight / targetHeight
 
-            val scaleFactor = max(1, min(widthRatio, heightRatio))
-
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
+            val scale = max(1, min(widthRatio, heightRatio)).toFloat()
+            1/scale
         }
-        return BitmapFactory.decodeFile(filePath, bmOptions)
     }
 }
