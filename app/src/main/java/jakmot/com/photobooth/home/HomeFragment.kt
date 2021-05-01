@@ -1,7 +1,6 @@
 package jakmot.com.photobooth.home
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +9,12 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.common.observeEvent
 import jakmot.com.photobooth.common.withArguments
 import jakmot.com.photobooth.databinding.HomeFragmentBinding
-import jakmot.com.photobooth.gallery.GalleryFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -60,11 +59,10 @@ class HomeFragment : Fragment() {
     private fun setupViews(binding: HomeFragmentBinding) {
         binding.takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
         binding.seePhotos.setOnClickListener {
-            startActivity(
-                Intent(this.context, GalleryFragment::class.java)
-            )
+            findNavController().navigate(R.id.galleryFragment)
         }
     }
+
     private fun observeViewModel() {
         homeViewModel.getTempFileCreatedEvent().observeEvent(this.viewLifecycleOwner) { imageFile ->
             takePicture(imageFile)

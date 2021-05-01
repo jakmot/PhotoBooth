@@ -1,11 +1,11 @@
 package jakmot.com.photobooth.gallery
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import jakmot.com.photobooth.databinding.GalleryFragmentBinding
 import jakmot.com.photobooth.domain.PhotoData
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,9 +41,9 @@ class GalleryFragment : Fragment() {
     }
 
     private fun onPhotoSelected(photoData: PhotoData) {
-        Intent(this.activity, PhotoFragment::class.java)
-            .putExtra(PhotoFragment.FILE_PATH_EXTRA, photoData.filePath)
-            .let { startActivity(it) }
+        val action = GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(photoData.filePath)
+
+        findNavController().navigate(action)
     }
 
     override fun onDestroy() {

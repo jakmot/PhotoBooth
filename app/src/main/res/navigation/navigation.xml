@@ -6,5 +6,25 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="jakmot.com.photobooth.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_galleryFragment"
+            app:destination="@id/galleryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="jakmot.com.photobooth.gallery.GalleryFragment"
+        android:label="GalleryFragment" >
+        <action
+            android:id="@+id/action_galleryFragment_to_photoFragment"
+            app:destination="@id/photoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoFragment"
+        android:name="jakmot.com.photobooth.gallery.PhotoFragment"
+        android:label="PhotoFragment" >
+        <argument
+            android:name="photoPath"
+            app:argType="string" />
+    </fragment>
 </navigation>
