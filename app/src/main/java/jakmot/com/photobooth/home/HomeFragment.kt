@@ -15,7 +15,7 @@ import jakmot.com.photobooth.R
 import jakmot.com.photobooth.common.observeEvent
 import jakmot.com.photobooth.common.withArguments
 import jakmot.com.photobooth.databinding.HomeFragmentBinding
-import jakmot.com.photobooth.gallery.GalleryActivity
+import jakmot.com.photobooth.gallery.GalleryFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -61,16 +61,16 @@ class HomeFragment : Fragment() {
         binding.takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
         binding.seePhotos.setOnClickListener {
             startActivity(
-                Intent(this.context, GalleryActivity::class.java)
+                Intent(this.context, GalleryFragment::class.java)
             )
         }
     }
     private fun observeViewModel() {
-        homeViewModel.getTempFileCreatedEvent().observeEvent(this) { imageFile ->
+        homeViewModel.getTempFileCreatedEvent().observeEvent(this.viewLifecycleOwner) { imageFile ->
             takePicture(imageFile)
         }
 
-        homeViewModel.getPhotoDefaultName().observeEvent(this) { defaultName ->
+        homeViewModel.getPhotoDefaultName().observeEvent(this.viewLifecycleOwner) { defaultName ->
             displayEnterPhoneNameDialog(defaultName)
         }
     }
