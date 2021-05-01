@@ -1,29 +1,17 @@
 package jakmot.com.photobooth.home
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import jakmot.com.photobooth.R
 import jakmot.com.photobooth.databinding.EnterPhotoNameDialogBinding
-import jakmot.com.photobooth.home.EnterPhotoNameDialog.OnNameEnteredListener
 
 
 class EnterPhotoNameDialog : DialogFragment() {
     private var defaultName: String? = null
-    private var onNameEnteredListener: OnNameEnteredListener = OnNameEnteredListener { }
 
-    fun interface OnNameEnteredListener {
-        fun onNameEntered(newName: String)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnNameEnteredListener) {
-            onNameEnteredListener = context
-        }
-    }
+    var onNameEnteredListener: (String) -> Unit = { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +30,7 @@ class EnterPhotoNameDialog : DialogFragment() {
                 .setPositiveButton(
                     getString(R.string.enter_photo_name_dialog_positive_button)
                 ) { _, _ ->
-                    onNameEnteredListener.onNameEntered(binding.fileName.text.toString())
+                    onNameEnteredListener(binding.fileName.text.toString())
                 }
                 .create().apply {
                     setCanceledOnTouchOutside(false)
