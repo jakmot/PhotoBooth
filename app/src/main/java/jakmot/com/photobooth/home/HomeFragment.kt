@@ -62,7 +62,8 @@ class HomeFragment : Fragment() {
         with(requireBinding()) {
             takePhoto.setOnClickListener { homeViewModel.onTakePhotoClicked() }
             seePhotos.setOnClickListener {
-                findNavController().navigate(R.id.galleryFragment)
+                val action = HomeFragmentDirections.actionHomeFragmentToGalleryFragment()
+                findNavController().navigate(action)
             }
         }
     }
