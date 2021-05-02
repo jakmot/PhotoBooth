@@ -1,13 +1,14 @@
 package jakmot.com.photobooth.gallery
 
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import jakmot.com.photobooth.common.layoutInflater
 import jakmot.com.photobooth.databinding.PhotoItemBinding
 import jakmot.com.photobooth.domain.PhotoData
 
 class PhotoAdapter(
-    private val onPhotoSelected: (PhotoData) -> Unit,
+    private val onPhotoSelected: (PhotoData, ImageView) -> Unit,
 ) : RecyclerView.Adapter<PhotoViewHolder>() {
 
     var photoDataList: List<PhotoData> = emptyList()

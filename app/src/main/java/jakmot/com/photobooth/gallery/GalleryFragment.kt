@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import jakmot.com.photobooth.databinding.GalleryFragmentBinding
 import jakmot.com.photobooth.domain.PhotoData
@@ -40,10 +42,12 @@ class GalleryFragment : Fragment() {
         galleryViewModel.onInit()
     }
 
-    private fun onPhotoSelected(photoData: PhotoData) {
-        val action = GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(photoData.filePath)
+    private fun onPhotoSelected(photoData: PhotoData, view: ImageView) {
+        val action =
+            GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(photoData.filePath)
 
-        findNavController().navigate(action)
+        val extras = FragmentNavigatorExtras(view to photoData.filePath)
+        findNavController().navigate(action, extras)
     }
 
     private fun requireBinding(): GalleryFragmentBinding =

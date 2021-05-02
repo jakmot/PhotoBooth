@@ -1,6 +1,7 @@
 package jakmot.com.photobooth.gallery
 
 import android.graphics.BitmapFactory
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import jakmot.com.photobooth.R
@@ -13,7 +14,7 @@ import kotlin.math.min
 
 class PhotoViewHolder(
     private val binding: PhotoItemBinding,
-    private val onPhotoSelected: (PhotoData) -> Unit,
+    private val onPhotoSelected: (PhotoData, ImageView) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private val resources = itemView.resources
@@ -27,7 +28,8 @@ class PhotoViewHolder(
                 .load(filePath)
                 .thumbnail(calculateScale(filePath))
                 .into(thumbnail)
-            photoItem.setOnClickListener { onPhotoSelected(photoData) }
+            thumbnail.transitionName = filePath
+            photoItem.setOnClickListener { onPhotoSelected(photoData, thumbnail) }
         }
     }
 
@@ -54,7 +56,7 @@ class PhotoViewHolder(
             val heightRatio = photoHeight / targetHeight
 
             val scale = max(1, min(widthRatio, heightRatio)).toFloat()
-            1/scale
+            1 / scale
         }
     }
 }
