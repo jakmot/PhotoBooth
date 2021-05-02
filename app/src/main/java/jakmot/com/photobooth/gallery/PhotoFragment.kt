@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
+import jakmot.com.photobooth.R
 import jakmot.com.photobooth.databinding.PhotoFragmentBinding
 
 class PhotoFragment : Fragment() {
@@ -19,7 +21,8 @@ class PhotoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(android.R.transition.move)
+            .inflateTransition(R.transition.shared_image_enter)
+        sharedElementReturnTransition = null
     }
 
     override fun onCreateView(
@@ -34,12 +37,16 @@ class PhotoFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
         with(requireBinding().photo) {
             transitionName = args.photoPath
             Glide.with(this)
                 .load(args.photoPath)
                 .into(this)
+
+            doOnPreDraw {
+                startPostponedEnterTransition()
+            }
         }
     }
 
