@@ -48,8 +48,8 @@ class PhotoFragment : Fragment() {
             ?: throw IllegalStateException("Accessing binding outside of Fragment lifecycle: PhotoFragment")
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding = null
     }
 }

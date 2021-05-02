@@ -55,8 +55,8 @@ class GalleryFragment : Fragment() {
             ?: throw IllegalStateException("Accessing binding outside of Fragment lifecycle: GalleryFragment")
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding = null
     }
 }
